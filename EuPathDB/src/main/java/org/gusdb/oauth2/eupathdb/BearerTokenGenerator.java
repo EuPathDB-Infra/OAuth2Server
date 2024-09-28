@@ -28,13 +28,14 @@ public class BearerTokenGenerator extends ToolBase {
   private static final String PROP_ACCOUNTDB_LOGIN = "accountDbLogin";
   private static final String PROP_ACCOUNTDB_PASSWORD = "accountDbPassword";
   private static final String PROP_LOGIN_NAME = "loginName";
+  private static final String PROP_DB_PLATFORM = "dbPlatform";
 
   public static void main(String[] args) throws Exception {
     new BearerTokenGenerator(args).execute();
   }
 
   public BearerTokenGenerator(String[] args) {
-    super(args, new String[] { PROP_KEYSTORE_FILE, PROP_KEYSTORE_PASSPHRASE, PROP_ACCOUNTDB_LOGIN, PROP_ACCOUNTDB_PASSWORD, PROP_LOGIN_NAME });
+    super(args, new String[] { PROP_KEYSTORE_FILE, PROP_KEYSTORE_PASSPHRASE, PROP_ACCOUNTDB_LOGIN, PROP_ACCOUNTDB_PASSWORD, PROP_LOGIN_NAME, PROP_DB_PLATFORM });
   }
 
   public void execute() throws Exception {
@@ -44,13 +45,15 @@ public class BearerTokenGenerator extends ToolBase {
     String accountDbLogin = findProp(PROP_ACCOUNTDB_LOGIN);
     String accountDbPassword = findProp(PROP_ACCOUNTDB_PASSWORD);
     String loginName = findProp(PROP_LOGIN_NAME);
+    String platform = findProp(PROP_DB_PLATFORM);
 
     SigningKeyStore keyStore = new SigningKeyStore(new KeyPairReader().readKeyPair(Paths.get(keyStoreFile), keyStorePassPhrase));
+
     // dummy up a client; SigningKeyStore requires >0 but will not be used here
     keyStore.setClientSigningKeys("abc", Set.of("mug2kfCI8qhXzrnuE/nh1gK9JbSFaXaih+zdsfD8io25MWH4b3V5u+U8E7SW4x7iBAHdq6yWWrF/TP9p098lfQ=="));
 
     // generate a new token for this account
-    String token = generateToken(keyStore, accountDbLogin, accountDbPassword, loginName);
+    String token = generateToken(keyStore, accountDbLogin, accountDbPassword, loginName, platform);
     System.out.println("Bearer Token\n\n" + token + "\n");
 
     // verify token using same method as the client
@@ -71,13 +74,13 @@ public class BearerTokenGenerator extends ToolBase {
     System.out.println("Subject after parsing token: " + claims.getSubject());
   }
 
-  private static String generateToken(SigningKeyStore keyStore, String accountDbLogin, String accountDbPassword, String loginName) throws Exception {
+  private static String generateToken(SigningKeyStore keyStore, String accountDbLogin, String accountDbPassword, String loginName, String dbPlatform) throws Exception {
 
     JsonObject authenticatorConfig = Json.createObjectBuilder()
         .add("login", accountDbLogin)
         .add("password", accountDbPassword)
         .add("connectionUrl", "jdbc:oracle:thin:@localhost:5011/acctdb.upenn.edu")
-        .add("platform", "Oracle")
+        .add("platform", dbPlatform)
         .add("poolSize", 1)
         .add("schema", "useraccounts.")
         .build();

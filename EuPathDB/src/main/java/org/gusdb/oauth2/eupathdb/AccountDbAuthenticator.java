@@ -208,7 +208,7 @@ public class AccountDbAuthenticator implements Authenticator {
       String id = new AccountManager(_accountDb, _schema, USER_PROPERTY_DEFS).createGuestAccount("guest_").getUserId().toString();
       // FIXME: since this code directly accesses the DB, it should live in AccountManager;
       //   however that complicates FgpUtil releases prior to move to bearer tokens, so adding it here.
-      String sql = "insert into useraccounts.guest_ids (user_id, creation_time) values (?, TO_DATE(SYSDATE))";
+      String sql = "insert into useraccounts.guest_ids (user_id, creation_time) values (?, current_date)";
       int inserted = new SQLRunner(_accountDb.getDataSource(), sql, "insert-guest-id")
           .executeUpdate(new Object[]{ Long.valueOf(id) }, new Integer[]{ Types.BIGINT });
       if (inserted != 1) throw new IllegalStateException("Tried to insert duplicate guest ID " + id + ". Check ID sequence to make sure it is big enough.");

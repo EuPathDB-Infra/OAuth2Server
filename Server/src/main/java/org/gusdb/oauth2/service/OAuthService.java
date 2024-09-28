@@ -45,6 +45,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Variant;
 
 import org.apache.logging.log4j.LogManager;
@@ -99,6 +100,9 @@ public class OAuthService {
   @Context
   private HttpHeaders _headers;
 
+  @Context
+  private UriInfo _uriInfo;
+
   @GET
   @Path(Endpoints.ASSETS + "{name:.+}")
   public Response getStaticFile(@PathParam("name") String name) {
@@ -140,8 +144,8 @@ public class OAuthService {
         AuthzRequest originalRequest = (formId == null ? null : session.clearFormId(formId));
         if (originalRequest == null) {
           // formId doesn't exist on this session; give user generic success page
-          return Response.seeOther(new URI(RESOURCE_PREFIX +
-              config.getLoginSuccessPage())).build();
+          String baseUri = _uriInfo.getBaseUri().toString().replace("http://", "https://");
+          return Response.seeOther(new URI(baseUri + RESOURCE_PREFIX + config.getLoginSuccessPage())).build();
         }
         authenticator.logSuccessfulLogin(loginName, validUserId.get(), originalRequest.getClientId(), originalRequest.getRedirectUri(), _request.getRemoteAddr());
         return OAuthRequestHandler.handleAuthorizationRequest(originalRequest, loginName, validUserId.get(), config.getTokenExpirationSecs());
@@ -255,7 +259,8 @@ public class OAuthService {
     if (status != null) {
       queryString += (queryString.isEmpty() ? "" : "&") + "status=" + status.name();
     }
-    return new URI(RESOURCE_PREFIX + OAuthServlet.getApplicationConfig(_context).getLoginFormPage() +
+    String baseUri = _uriInfo.getBaseUri().toString().replace("http://", "https://");
+    return new URI(baseUri + RESOURCE_PREFIX + OAuthServlet.getApplicationConfig(_context).getLoginFormPage() +
         (queryString.isEmpty() ? "" : "?" + queryString));
   }
 
