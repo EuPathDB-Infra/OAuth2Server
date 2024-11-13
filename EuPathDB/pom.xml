@@ -16,7 +16,7 @@
     <!-- Expect this property to be passed in -->
     <oauthConfigFile>WEB-INF/OAuthSampleConfig.json</oauthConfigFile>
 
-    <fgputil.version>2.13.1</fgputil.version>
+    <fgputil.version>2.14.1-jakarta</fgputil.version>
   </properties>
 
   <dependencies>

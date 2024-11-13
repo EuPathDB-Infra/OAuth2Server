@@ -1,7 +1,7 @@
 package org.gusdb.oauth2.client;
 
-import javax.ws.rs.core.Response.Status.Family;
-import javax.ws.rs.core.Response.StatusType;
+import jakarta.ws.rs.core.Response.Status.Family;
+import jakarta.ws.rs.core.Response.StatusType;
 
 public enum HttpStatus implements StatusType {
 

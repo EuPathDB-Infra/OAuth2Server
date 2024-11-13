@@ -4,12 +4,12 @@
   <name>OAuth2</name>
   <artifactId>oauth2</artifactId>
   <packaging>pom</packaging>
-  <version>2.0.2-SNAPSHOT</version>
+  <version>2.0.2-jakarta-SNAPSHOT</version>
 
   <parent>
     <groupId>org.gusdb</groupId>
     <artifactId>base-pom</artifactId>
-    <version>2.22</version>
+    <version>2.22-jakarta</version>
   </parent>
 
   <!-- Manage versions of libs specific to OAuth/tokens-->
@@ -23,8 +23,10 @@
 
   <modules>
     <module>Client</module>
+    <!-- Cannot make Server compliant with jakarta because of Oltu limitations
     <module>Server</module>
     <module>EuPathDB</module>
+    -->
   </modules>
 
   <scm>

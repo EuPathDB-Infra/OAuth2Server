@@ -2,8 +2,8 @@ package org.gusdb.oauth2.service;
 
 import java.util.Collections;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.gusdb.oauth2.client.UnacceptableRequestReason;

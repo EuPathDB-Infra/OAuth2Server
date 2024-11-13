@@ -9,8 +9,8 @@ import java.util.Base64;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
 import org.gusdb.oauth2.exception.CryptoException;
 import org.gusdb.oauth2.shared.ECPublicKeyRepresentation;

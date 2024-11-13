@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.gusdb</groupId>
     <artifactId>oauth2</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.2-jakarta-SNAPSHOT</version>
   </parent>
 
   <dependencies>
@@ -18,7 +18,7 @@
       <artifactId>jersey-client</artifactId>
     </dependency>
 
-    <!-- Using org.json for external APIs in anticipation of nixing javax.json internally -->
+    <!-- Using org.json for external APIs in anticipation of nixing jakarta.json internally -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
